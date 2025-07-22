@@ -69,8 +69,8 @@ async function loadRandomImages() {
 
 async function onSearch(e) {
   e.preventDefault();
-  query = inputEl.value.trim();
-  if (!query) {
+  const searchTerm = inputEl.value.trim();
+  if (!searchTerm) {
     iziToast.warning({
       message: 'Please enter a search query',
       position: 'topRight',
@@ -78,8 +78,8 @@ async function onSearch(e) {
     return;
   }
 
+  query = searchTerm;
   page = 1;
-  clearGallery();
   hideLoadMoreButton();
   showLoader();
 
@@ -96,13 +96,15 @@ async function onSearch(e) {
       return;
     }
 
+    clearGallery();
     createGallery(data.hits);
+
     iziToast.success({
       message: `${totalHits} images found`,
       position: 'topRight',
     });
 
-    if (totalHits > perPage) {
+    if (totalHits > PER_PAGE) {
       showLoadMoreButton();
     }
   } catch (err) {
