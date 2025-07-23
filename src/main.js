@@ -22,7 +22,6 @@ const randomKeywords = [
   'people',
   'architecture',
   'beauty',
-  'babies',
 ];
 
 let page = 1;
@@ -120,6 +119,7 @@ async function onSearch(e) {
 
 async function onLoadMore() {
   page += 1;
+  loadMoreBtn.disabled = true;
   showLoader();
 
   try {
@@ -142,6 +142,10 @@ async function onLoadMore() {
     });
   } finally {
     hideLoader();
+
+    if (!loadMoreBtn.classList.contains('hidden')) {
+      loadMoreBtn.disabled = false;
+    }
   }
 }
 
