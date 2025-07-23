@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <li class="gallery-item">
+      <a class="gallery-link" href="${largeImageURL}">
+        <picture>
+          <source type="image/webp" srcset="" />
+        </picture>
+      </a>
+
+      <ul class="info">
+        <li class="info-item">
+          <h4>👍</h4>
+          <p>${likes}</p>
+        </li>
+        <li class="info-item">
+          <h4>👁️</h4>
+          <p>${views}</p>
+        </li>
+        <li class="info-item">
+          <h4>💬</h4>
+          <p>${comments}</p>
+        </li>
+        <li class="info-item">
+          <h4>⬇️</h4>
+          <p>${downloads}</p>
+        </li>
+      </ul>
+    </li>
+  </body>
+</html>
