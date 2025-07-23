@@ -39,24 +39,16 @@ async function loadRandomImages() {
   showLoader();
 
   try {
-    const defaultQuery =
-      randomKeywords[Math.floor(Math.random() * randomKeywords.length)];
-    query = defaultQuery;
-
-    const firstPageData = await getImagesByQuery(query, 1);
-    totalHits = firstPageData.totalHits;
-    const maxPages = Math.ceil(totalHits / PER_PAGE);
-
-    page = Math.floor(Math.random() * maxPages) + 1;
+    query = randomKeywords[Math.floor(Math.random() * randomKeywords.length)];
+    page = 1;
     const data = await getImagesByQuery(query, page);
+    totalHits = data.totalHits;
 
     createGallery(data.hits);
-
-    if (page * PER_PAGE < totalHits) {
+    if (totalHits > PER_PAGE) {
       showLoadMoreButton();
     }
   } catch (err) {
-    console.error(err);
     iziToast.error({
       message: 'Error loading random images.',
       position: 'topRight',
@@ -79,6 +71,7 @@ async function onSearch(e) {
 
   query = searchTerm;
   page = 1;
+  clearGallery();
   hideLoadMoreButton();
   showLoader();
 
@@ -87,6 +80,7 @@ async function onSearch(e) {
     totalHits = data.totalHits;
 
     if (data.hits.length === 0) {
+      formEl.reset();
       iziToast.error({
         message:
           'Sorry, there are no images matching your search query. Please try again!',
@@ -95,8 +89,8 @@ async function onSearch(e) {
       return;
     }
 
-    clearGallery();
     createGallery(data.hits);
+    formEl.reset();
 
     iziToast.success({
       message: `${totalHits} images found`,
@@ -113,13 +107,12 @@ async function onSearch(e) {
     });
   } finally {
     hideLoader();
-    formEl.reset();
   }
 }
 
 async function onLoadMore() {
-  page += 1;
   loadMoreBtn.disabled = true;
+  page += 1;
   showLoader();
 
   try {
@@ -141,11 +134,8 @@ async function onLoadMore() {
       position: 'topRight',
     });
   } finally {
+    loadMoreBtn.disabled = false;
     hideLoader();
-
-    if (!loadMoreBtn.classList.contains('hidden')) {
-      loadMoreBtn.disabled = false;
-    }
   }
 }
 
